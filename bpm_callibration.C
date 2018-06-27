@@ -121,9 +121,8 @@ bpm_callibration(const char* finname  = "harp_info.txt"){
    
     //    TFile *f = new TFile(Form("../hallc_replay/ROOTfiles/hms_raster_simple_%d_-1.root",hms_run_NUM[ir]),"READ"); // %d : expects integer; %f expects float 
     
-    TFile *f = new TFile(Form("/Users/brash/Dropbox/Research/analysis/hallc_replay/ROOTfiles/shms_replay_raster_simple_%d_-1.root",shms_run_NUM[ir]),"READ"); // %d : expects integer; %f expects float 
-    
-    
+    TString file_format=gSystem->GetFromPipe("echo $hallc_replay_dir")+"/ROOTfiles/shms_replay_raster_simple_%d_-1.root";
+    TFile *f = new TFile(Form(file_format,shms_run_NUM[ir]),"READ"); // %d : expects integer; %f expects float 
     TTree *T = (TTree*)f->Get("E");
     Int_t totev = T->GetEntries(); 
     //Read the branch for the BPM positions from the EPICS 
@@ -203,6 +202,7 @@ bpm_callibration(const char* finname  = "harp_info.txt"){
     cout << "******* ok *****" << endl;
     
   } // Loop over run ends here
+
   
   for (UInt_t ir = 0; ir < hAx.size(); ir ++){  //Second Loop over runs starts here
 
@@ -211,9 +211,8 @@ bpm_callibration(const char* finname  = "harp_info.txt"){
    
     //    TFile *f = new TFile(Form("../hallc_replay/ROOTfiles/hms_raster_simple_%d_-1.root",hms_run_NUM[ir]),"READ"); // %d : expects integer; %f expects float 
     
-    TFile *f = new TFile(Form("/Users/brash/Dropbox/Research/analysis/hallc_replay/ROOTfiles/shms_replay_raster_simple_%d_-1.root",shms_run_NUM[ir]),"READ"); // %d : expects integer; %f expects float 
-    
-    
+    TString file_format=gSystem->GetFromPipe("echo $hallc_replay_dir")+"/ROOTfiles/shms_replay_raster_simple_%d_-1.root";
+    TFile *f = new TFile(Form(file_format,shms_run_NUM[ir]),"READ"); // %d : expects integer; %f expects float 
     TTree *T = (TTree*)f->Get("E");
     Int_t totev = T->GetEntries(); 
     //Read the branch for the BPM positions from the EPICS 

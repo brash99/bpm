@@ -120,8 +120,8 @@ bpm_callibration_set(const char* finname  = "harp_info.txt"){
     
    
     //    TFile *f = new TFile(Form("../hallc_replay/ROOTfiles/hms_raster_simple_%d_-1.root",hms_run_NUM[ir]),"READ"); // %d : expects integer; %f expects float 
-    
-    TFile *f = new TFile(Form("/Users/brash/Dropbox/Research/analysis/hallc_replay/ROOTfiles/shms_replay_raster_simple_%d_-1.root",shms_run_NUM[ir]),"READ"); // %d : expects integer; %f expects float 
+    TString file_format=gSystem->GetFromPipe("echo $hallc_replay_dir")+"/ROOTfiles/shms_replay_raster_simple_%d_-1.root"; 
+    TFile *f = new TFile(Form(file_format,shms_run_NUM[ir]),"READ"); // %d : expects integer; %f expects float 
     
     
     TTree *T = (TTree*)f->Get("E");
@@ -210,8 +210,8 @@ bpm_callibration_set(const char* finname  = "harp_info.txt"){
     
    
     //    TFile *f = new TFile(Form("../hallc_replay/ROOTfiles/hms_raster_simple_%d_-1.root",hms_run_NUM[ir]),"READ"); // %d : expects integer; %f expects float 
-    
-    TFile *f = new TFile(Form("/Users/brash/Dropbox/Research/analysis/hallc_replay/ROOTfiles/shms_replay_raster_simple_%d_-1.root",shms_run_NUM[ir]),"READ"); // %d : expects integer; %f expects float 
+    TString file_format=gSystem->GetFromPipe("echo $hallc_replay_dir")+"/ROOTfiles/shms_replay_raster_simple_%d_-1.root"; 
+    TFile *f = new TFile(Form(file_format,shms_run_NUM[ir]),"READ"); // %d : expects integer; %f expects float 
     
     
     TTree *T = (TTree*)f->Get("E");
