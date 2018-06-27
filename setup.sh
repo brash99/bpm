@@ -2,8 +2,8 @@
 
 # -----------------------------------------------------------------------------
 #  Change these if this if not where hallc_replay and hcana live
-export hcana_dir=/home/$USER/analysis/hcana
-export hallc_replay_dir=/home/$USER/analysis/hallc_replay
+export hcana_dir=/Users/brash/Dropbox/Research/analysis/hcana
+export hallc_replay_dir=/Users/brash/Dropbox/Research/analysis/hallc_replay
 
 # -----------------------------------------------------------------------------
 #  Change if this gives you the wrong version of root, evio, etc
