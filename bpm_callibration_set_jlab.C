@@ -248,8 +248,8 @@ bpm_callibration_set_jlab(const char* finname  = "harp_info.txt"){
 	if (abs(bpmAyposmean[ir]-bpmAypos) < 1.5*bpmAyposmeanErr[ir] ) hbpmAyposc ->Fill(bpmAypos);
 	if (abs(bpmBxposmean[ir]-bpmBxpos) < 1.5*bpmBxposmeanErr[ir] ) hbpmBxposc ->Fill(bpmBxpos);
 	if (abs(bpmByposmean[ir]-bpmBypos) < 1.5*bpmByposmeanErr[ir] ) hbpmByposc ->Fill(bpmBypos);
-	if (abs(bpmCxposmean[ir]-bpmCxpos) < 1.5*bpmCxposmeanErr[ir] )hbpmCxposc ->Fill(bpmCxpos);
-	if (abs(bpmCyposmean[ir]-bpmCypos) < 1.5*bpmCyposmeanErr[ir] )hbpmCyposc ->Fill(bpmCypos);
+	if (abs(bpmCxposmean[ir]-bpmCxpos) < 1.5*bpmCxposmeanErr[ir] ) hbpmCxposc ->Fill(bpmCxpos);
+	if (abs(bpmCyposmean[ir]-bpmCypos) < 1.5*bpmCyposmeanErr[ir] ) hbpmCyposc ->Fill(bpmCypos);
       }
     }
     
