@@ -244,20 +244,12 @@ bpm_callibration_jlab(const char* finname  = "harp_info.txt"){
     for (Int_t iev = 0 ; iev < totev ;iev ++){
       T->GetEntry(iev);
       if (ibcm1>1){
-	if (abs(bpmAxposmean[ir]-bpmAxpos) < 1.5*bpmAxposmeanErr[ir] ) hbpmAxposc ->Fill(bpmAxpos);
-	if (abs(bpmAyposmean[ir]-bpmAypos) < 1.5*bpmAyposmeanErr[ir] ) hbpmAyposc ->Fill(bpmAypos);
-	if (abs(bpmBxposmean[ir]-bpmBxpos) < 1.5*bpmBxposmeanErr[ir] ) hbpmBxposc ->Fill(bpmBxpos);
-	if (abs(bpmByposmean[ir]-bpmBypos) < 1.5*bpmByposmeanErr[ir] ) hbpmByposc ->Fill(bpmBypos);
-	if (abs(bpmCxposmean[ir]-bpmCxpos) < 1.5*bpmCxposmeanErr[ir] ) hbpmCxposc ->Fill(bpmCxpos);
-	if (abs(bpmCyposmean[ir]-bpmCypos) < 1.5*bpmCyposmeanErr[ir] ) hbpmCyposc ->Fill(bpmCypos);
-      }
-      if (ibcm1>1 && ir == (hAx.size()-1)) {
-	      cout << "iev = " << iev << " bpmCypos = " << bpmCypos << " bpmCyposmean = " << bpmCyposmean[ir] << " bpmCyposmeanErr = " << bpmCyposmeanErr[ir] << endl;
-	      if (abs(bpmCyposmean[ir]-bpmCypos) < 1.5*bpmCyposmeanErr[ir]) {
-		      cout << "Pass!!" << endl;
-	      }else{
-		      cout << "Fail!!" << endl;
-	      }
+	if (TMath::Abs(bpmAxposmean[ir]-bpmAxpos) < 1.5*bpmAxposmeanErr[ir] ) hbpmAxposc ->Fill(bpmAxpos);
+	if (TMath::Abs(bpmAyposmean[ir]-bpmAypos) < 1.5*bpmAyposmeanErr[ir] ) hbpmAyposc ->Fill(bpmAypos);
+	if (TMath::Abs(bpmBxposmean[ir]-bpmBxpos) < 1.5*bpmBxposmeanErr[ir] ) hbpmBxposc ->Fill(bpmBxpos);
+	if (TMath::Abs(bpmByposmean[ir]-bpmBypos) < 1.5*bpmByposmeanErr[ir] ) hbpmByposc ->Fill(bpmBypos);
+	if (TMath::Abs(bpmCxposmean[ir]-bpmCxpos) < 1.5*bpmCxposmeanErr[ir] ) hbpmCxposc ->Fill(bpmCxpos);
+	if (TMath::Abs(bpmCyposmean[ir]-bpmCypos) < 1.5*bpmCyposmeanErr[ir] ) hbpmCyposc ->Fill(bpmCypos);
       }
     }
 
