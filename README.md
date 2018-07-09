@@ -11,6 +11,6 @@
 
 5.  Within ROOT, execute the bpm calibration macro as:
 
-.x bpm_calibration.C("harp_info.txt"_
+.x bpm_calibration.C("harp_info.txt")
 
 
