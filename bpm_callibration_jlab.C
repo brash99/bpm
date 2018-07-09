@@ -11,7 +11,7 @@
 #include <TROOT.h>
 
 void
-bpm_callibration_jlab(const char* finname  = "harp_info.txt"){
+bpm_callibration(const char* finname  = "harp_info.txt"){
   
   
   gStyle->SetOptStat(0);
@@ -186,27 +186,27 @@ bpm_callibration_jlab(const char* finname  = "harp_info.txt"){
     //parameter(1) = mean of the gaussian functions   
     //bpmAxposmean[ir] = hbpmAxpos->GetFunction("gaus")->GetParameter(1);
     bpmAxposmean[ir] = hbpmAxpos->GetMean();
-    bpmAxposmeanErr[ir] = hbpmAxpos->GetRMS()/sqrt(hbpmAxpos->GetEntries());
+    bpmAxposmeanErr[ir] = hbpmAxpos->GetRMS();
     cout <<"mean of x of bpm A :" << bpmAxposmean[ir] << endl;
     //bpmAyposmean[ir] = hbpmAypos->GetFunction("gaus")->GetParameter(1);
     bpmAyposmean[ir] = hbpmAypos->GetMean();
-    bpmAyposmeanErr[ir] = hbpmAypos->GetRMS()/sqrt(hbpmAypos->GetEntries());
+    bpmAyposmeanErr[ir] = hbpmAypos->GetRMS();
     cout <<"mean of y of bpm A :" << bpmAyposmean[ir] << endl;
     //bpmBxposmean[ir]= hbpmBxpos->GetFunction("gaus")->GetParameter(1);
     bpmBxposmean[ir] = hbpmBxpos->GetMean();
-    bpmBxposmeanErr[ir] = hbpmBxpos->GetRMS()/sqrt(hbpmBxpos->GetEntries());
+    bpmBxposmeanErr[ir] = hbpmBxpos->GetRMS();
     cout <<"mean of x of bpm B :" << bpmBxposmean[ir] << endl;
     //bpmByposmean[ir] = hbpmBypos->GetFunction("gaus")->GetParameter(1);
     bpmByposmean[ir] = hbpmBypos->GetMean();
-    bpmByposmeanErr[ir] = hbpmBypos->GetRMS()/sqrt(hbpmBypos->GetEntries());
+    bpmByposmeanErr[ir] = hbpmBypos->GetRMS();
     cout <<"mean of y of bpm B :" << bpmByposmean[ir] << endl;
     //bpmCxposmean[ir] = hbpmCxpos->GetFunction("gaus")->GetParameter(1);
     bpmCxposmean[ir] = hbpmCxpos->GetMean();
-    bpmCxposmeanErr[ir] = hbpmCxpos->GetRMS()/sqrt(hbpmCxpos->GetEntries());
+    bpmCxposmeanErr[ir] = hbpmCxpos->GetRMS();
     cout <<"mean of x of bpm C :" << bpmCxposmean[ir] << endl;
     //bpmCyposmean[ir] = hbpmCypos->GetFunction("gaus")->GetParameter(1);
     bpmCyposmean[ir] = hbpmCypos->GetMean();
-    bpmCyposmeanErr[ir] = hbpmCypos->GetRMS()/sqrt(hbpmCypos->GetEntries());
+    bpmCyposmeanErr[ir] = hbpmCypos->GetRMS();
     cout <<"mean of y of bpm C :" << bpmCyposmean[ir] << endl;
     
     cout << "******* ok *****" << endl;
@@ -227,12 +227,12 @@ bpm_callibration_jlab(const char* finname  = "harp_info.txt"){
     Int_t totev = T->GetEntries(); 
     //Read the branch for the BPM positions from the EPICS 
     T->SetBranchAddress("ibcm1",&ibcm1);
-    T->SetBranchAddress("IPM3H07A.XPOS",&bpmAxpos);
-    T->SetBranchAddress("IPM3H07A.YPOS",&bpmAypos);
-    T->SetBranchAddress("IPM3H07B.XPOS",&bpmBxpos);
-    T->SetBranchAddress("IPM3H07B.YPOS",&bpmBypos); 
-    T->SetBranchAddress("IPM3H07C.XPOS",&bpmCxpos);
-    T->SetBranchAddress("IPM3H07C.YPOS",&bpmCypos); 
+    T->SetBranchAddress("IPM3H07A.XRAW",&bpmAxpos);
+    T->SetBranchAddress("IPM3H07A.YRAW",&bpmAypos);
+    T->SetBranchAddress("IPM3H07B.XRAW",&bpmBxpos);
+    T->SetBranchAddress("IPM3H07B.YRAW",&bpmBypos); 
+    T->SetBranchAddress("IPM3H07C.XRAW",&bpmCxpos);
+    T->SetBranchAddress("IPM3H07C.YRAW",&bpmCypos); 
     //Creating the histogram of the BPM positions and 
     TH1F* hbpmAxposc =new TH1F("bpmAxposc","bpmAxposc",100,-3,3);
     TH1F* hbpmAyposc =new TH1F("bpmAyposc","bpmAyposc",100,-3,3);
@@ -243,14 +243,13 @@ bpm_callibration_jlab(const char* finname  = "harp_info.txt"){
     // Fill Histograms here filling the BPM positions histograms   
     for (Int_t iev = 0 ; iev < totev ;iev ++){
       T->GetEntry(iev);
-      Double_t cut = 0.55;
       if (ibcm1>1){
-	if (abs(bpmAxposmean[ir]-bpmAxpos) < cut) hbpmAxposc ->Fill(bpmAxpos);
-	if (abs(bpmAyposmean[ir]-bpmAypos) < cut) hbpmAyposc ->Fill(bpmAypos);
-	if (abs(bpmBxposmean[ir]-bpmBxpos) < cut) hbpmBxposc ->Fill(bpmBxpos);
-	if (abs(bpmByposmean[ir]-bpmBypos) < cut) hbpmByposc ->Fill(bpmBypos);
-	if (abs(bpmCxposmean[ir]-bpmCxpos) < cut)hbpmCxposc ->Fill(bpmCxpos);
-	if (abs(bpmCyposmean[ir]-bpmCypos) < cut)hbpmCyposc ->Fill(bpmCypos);
+	if (abs(bpmAxposmean[ir]-bpmAxpos) < 1.5*bpmAxposmeanErr[ir] ) hbpmAxposc ->Fill(bpmAxpos);
+	if (abs(bpmAyposmean[ir]-bpmAypos) < 1.5*bpmAyposmeanErr[ir] ) hbpmAyposc ->Fill(bpmAypos);
+	if (abs(bpmBxposmean[ir]-bpmBxpos) < 1.5*bpmBxposmeanErr[ir] ) hbpmBxposc ->Fill(bpmBxpos);
+	if (abs(bpmByposmean[ir]-bpmBypos) < 1.5*bpmByposmeanErr[ir] ) hbpmByposc ->Fill(bpmBypos);
+	if (abs(bpmCxposmean[ir]-bpmCxpos) < 1.5*bpmCxposmeanErr[ir] ) hbpmCxposc ->Fill(bpmCxpos);
+	if (abs(bpmCyposmean[ir]-bpmCypos) < 1.5*bpmCyposmeanErr[ir] ) hbpmCyposc ->Fill(bpmCypos);
       }
     }
     
