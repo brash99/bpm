@@ -187,27 +187,27 @@ bpm_callibration_jlab(const char* finname  = "harp_info.txt"){
     //bpmAxposmean[ir] = hbpmAxpos->GetFunction("gaus")->GetParameter(1);
     bpmAxposmean[ir] = hbpmAxpos->GetMean();
     bpmAxposmeanErr[ir] = hbpmAxpos->GetRMS();
-    cout <<"mean of x of bpm A :" << bpmAxposmean[ir] << endl;
+    cout <<"mean of x of bpm A :" << bpmAxposmean[ir] << " +/- " << bpmAxposmeanErr[ir] << endl;
     //bpmAyposmean[ir] = hbpmAypos->GetFunction("gaus")->GetParameter(1);
     bpmAyposmean[ir] = hbpmAypos->GetMean();
     bpmAyposmeanErr[ir] = hbpmAypos->GetRMS();
-    cout <<"mean of y of bpm A :" << bpmAyposmean[ir] << endl;
+    cout <<"mean of y of bpm A :" << bpmAyposmean[ir] << " +/- " << bpmAyposmeanErr[ir] << endl;
     //bpmBxposmean[ir]= hbpmBxpos->GetFunction("gaus")->GetParameter(1);
     bpmBxposmean[ir] = hbpmBxpos->GetMean();
     bpmBxposmeanErr[ir] = hbpmBxpos->GetRMS();
-    cout <<"mean of x of bpm B :" << bpmBxposmean[ir] << endl;
+    cout <<"mean of x of bpm B :" << bpmBxposmean[ir] << " +/- " << bpmBxposmeanErr[ir] << endl;
     //bpmByposmean[ir] = hbpmBypos->GetFunction("gaus")->GetParameter(1);
     bpmByposmean[ir] = hbpmBypos->GetMean();
     bpmByposmeanErr[ir] = hbpmBypos->GetRMS();
-    cout <<"mean of y of bpm B :" << bpmByposmean[ir] << endl;
+    cout <<"mean of y of bpm B :" << bpmByposmean[ir] << " +/- " << bpmByposmeanErr[ir] << endl;
     //bpmCxposmean[ir] = hbpmCxpos->GetFunction("gaus")->GetParameter(1);
     bpmCxposmean[ir] = hbpmCxpos->GetMean();
     bpmCxposmeanErr[ir] = hbpmCxpos->GetRMS();
-    cout <<"mean of x of bpm C :" << bpmCxposmean[ir] << endl;
+    cout <<"mean of x of bpm C :" << bpmCxposmean[ir] << " +/- " << bpmCxposmeanErr[ir] << endl;
     //bpmCyposmean[ir] = hbpmCypos->GetFunction("gaus")->GetParameter(1);
     bpmCyposmean[ir] = hbpmCypos->GetMean();
     bpmCyposmeanErr[ir] = hbpmCypos->GetRMS();
-    cout <<"mean of y of bpm C :" << bpmCyposmean[ir] << endl;
+    cout <<"mean of y of bpm C :" << bpmCyposmean[ir] << " +/- " << bpmCyposmeanErr[ir] << endl;
     
     cout << "******* ok *****" << endl;
     
@@ -251,8 +251,16 @@ bpm_callibration_jlab(const char* finname  = "harp_info.txt"){
 	if (abs(bpmCxposmean[ir]-bpmCxpos) < 1.5*bpmCxposmeanErr[ir] ) hbpmCxposc ->Fill(bpmCxpos);
 	if (abs(bpmCyposmean[ir]-bpmCypos) < 1.5*bpmCyposmeanErr[ir] ) hbpmCyposc ->Fill(bpmCypos);
       }
+      if (ibcm1>1 && ir == (hAx.size()-1)) {
+	      cout << "iev = " << iev << " bpmCypos = " << bpmCypos << " bpmCyposmean = " << bpmCyposmean[ir] << " bpmCyposmeanErr = " << bpmCyposmeanErr[ir] << endl;
+	      if (abs(bpmCyposmean[ir]-bpmCypos) < 1.5*bpmCyposmeanErr[ir]) {
+		      cout << "Pass!!" << endl;
+	      }else{
+		      cout << "Fail!!" << endl;
+	      }
+      }
     }
-    
+
     // TF1 *fit1 = (TF1 *)hbpmAxpos->GetFunction("gaus");
     // Double_t parameter0 = fit1->GetParameter(0);
     //cout << "parameter0 :"<<parameter0 << endl;
