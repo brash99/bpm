@@ -46,6 +46,7 @@ bpm_callibration_offsets(const char* finname  = "harp_info.txt"){
   Double_t bpmAxpos,bpmAypos,bpmBxpos,bpmBypos,bpmCxpos,bpmCypos;
   Double_t bpmAxraw,bpmAyraw,bpmBxraw,bpmByraw,bpmCxraw,bpmCyraw;
   Double_t bpmAxoff,bpmAyoff,bpmBxoff,bpmByoff,bpmCxoff,bpmCyoff;
+  Double_t bpmAxpoff,bpmAypoff,bpmBxpoff,bpmBypoff,bpmCxpoff,bpmCypoff;
   
   Double_t c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14; 
   std :: vector<Double_t>  hAx, hAy, hBx, hBy, hAz, hBz, herr ;
@@ -119,6 +120,8 @@ bpm_callibration_offsets(const char* finname  = "harp_info.txt"){
   cmean ->Divide(6,size);
   TCanvas *cmean2 = new TCanvas("cmean2","Mean BPM Fits", 1800, 1200);
   cmean2 ->Divide(6,size);
+  TCanvas *cmean3 = new TCanvas("cmean3","Mean BPM Diffs", 1800, 1200);
+  cmean3 ->Divide(6,size);
 
   for (UInt_t ir = 0; ir < hAx.size(); ir ++){  //Loop over runs starts here
 
@@ -151,6 +154,12 @@ bpm_callibration_offsets(const char* finname  = "harp_info.txt"){
     T->SetBranchAddress("IPM3H07B.YSOF",&bpmByoff); 
     T->SetBranchAddress("IPM3H07C.XSOF",&bpmCxoff);
     T->SetBranchAddress("IPM3H07C.YSOF",&bpmCyoff); 
+    T->SetBranchAddress("IPM3H07A.XPOF",&bpmAxpoff);
+    T->SetBranchAddress("IPM3H07A.YPOF",&bpmAypoff);
+    T->SetBranchAddress("IPM3H07B.XPOF",&bpmBxpoff);
+    T->SetBranchAddress("IPM3H07B.YPOF",&bpmBypoff); 
+    T->SetBranchAddress("IPM3H07C.XPOF",&bpmCxpoff);
+    T->SetBranchAddress("IPM3H07C.YPOF",&bpmCypoff); 
     //Creating the histogram of the BPM positions and 
     TH1F* hbpmAxpos =new TH1F("bpmAxpos","bpmAxpos",100,-3,3);
     TH1F* hbpmAypos =new TH1F("bpmAypos","bpmAypos",100,-3,3);
@@ -158,6 +167,12 @@ bpm_callibration_offsets(const char* finname  = "harp_info.txt"){
     TH1F* hbpmBypos =new TH1F("bpmBypos","bpmBypos",100,-3,3);
     TH1F* hbpmCxpos =new TH1F("bpmCxpos","bpmCxpos",100,-3,3);
     TH1F* hbpmCypos =new TH1F("bpmCypos","bpmCypos",100,-3,3);
+    TH1F* hbpmAxposoff =new TH1F("bpmAxposoff","bpmAxposoff",100,-3.0,3.0);
+    TH1F* hbpmAyposoff =new TH1F("bpmAyposoff","bpmAyposoff",100,-3.0,3.0);
+    TH1F* hbpmBxposoff =new TH1F("bpmBxposoff","bpmBxposoff",100,-3.0,3.0);
+    TH1F* hbpmByposoff =new TH1F("bpmByposoff","bpmByposoff",100,-3.0,3.0);
+    TH1F* hbpmCxposoff =new TH1F("bpmCxposoff","bpmCxposoff",100,-3.0,3.0);
+    TH1F* hbpmCyposoff =new TH1F("bpmCyposoff","bpmCyposoff",100,-3.0,3.0);
     // Fill Histograms here filling the BPM positions histograms   
     for (Int_t iev = 0 ; iev < totev ;iev ++){
       T->GetEntry(iev);
@@ -168,18 +183,36 @@ bpm_callibration_offsets(const char* finname  = "harp_info.txt"){
 	hbpmBypos ->Fill(bpmByraw);
 	hbpmCxpos ->Fill(bpmCxraw);
 	hbpmCypos ->Fill(bpmCyraw);
-	cout << "bpmAx diff = " << bpmAxpos-bpmAxraw << " "; 
-	cout << "bpmAy diff = " << bpmAypos-bpmAyraw << " "; 
-	cout << "bpmBx diff = " << bpmBxpos-bpmBxraw << " "; 
-	cout << "bpmBy diff = " << bpmBypos-bpmByraw << " "; 
-	cout << "bpmCx diff = " << bpmCxpos-bpmCxraw << " "; 
-	cout << "bpmCy diff = " << bpmCypos-bpmCyraw << endl; 
+	hbpmAxposoff ->Fill((bpmAxpos+bpmAxoff)-bpmAxraw);
+	hbpmAyposoff ->Fill((bpmAypos+bpmAyoff)-bpmAyraw);
+	hbpmBxposoff ->Fill((bpmBxpos+bpmBxoff)-bpmBxraw);
+	hbpmByposoff ->Fill((bpmBypos+bpmByoff)-bpmByraw);
+	hbpmCxposoff ->Fill((bpmCxpos+bpmCxoff)-bpmCxraw);
+	hbpmCyposoff ->Fill((bpmCypos+bpmCyoff)-bpmCyraw);
+	cout << "bpmAx Pos = " << bpmAxpos << " "; 
+	cout << "bpmAy Pos = " << bpmAypos << " "; 
+	cout << "bpmBx Pos = " << bpmBxpos << " "; 
+	cout << "bpmBy Pos = " << bpmBypos << " "; 
+	cout << "bpmCx Pos = " << bpmCxpos << " "; 
+	cout << "bpmCy Pos = " << bpmCypos << endl; 
         cout << "bpmAx Offs = " << bpmAxoff << " ";
         cout << "bpmAy Offs = " << bpmAyoff << " ";
         cout << "bpmBx Offs = " << bpmBxoff << " ";
         cout << "bpmBy Offs = " << bpmByoff << " ";
         cout << "bpmCx Offs = " << bpmCxoff << " ";
         cout << "bpmCy Offs = " << bpmCyoff << endl;
+        cout << "bpmAx raw = " << bpmAxraw << " ";
+        cout << "bpmAy raw = " << bpmAyraw << " ";
+        cout << "bpmBx raw = " << bpmBxraw << " ";
+        cout << "bpmBy raw = " << bpmByraw << " ";
+        cout << "bpmCx raw = " << bpmCxraw << " ";
+        cout << "bpmCy raw = " << bpmCyraw << endl;
+        cout << "bpmAx Slope = " << (bpmAxpos+bpmAxoff)/bpmAxraw << " ";
+        cout << "bpmAy Slope = " << (bpmAypos+bpmAyoff)/bpmAyraw << " ";
+        cout << "bpmBx Slope = " << (bpmBxpos+bpmBxoff)/bpmBxraw << " ";
+        cout << "bpmBy Slope = " << (bpmBypos+bpmByoff)/bpmByraw << " ";
+        cout << "bpmCx Slope = " << (bpmCxpos+bpmCxoff)/bpmCxraw << " ";
+        cout << "bpmCy Slope = " << (bpmCypos+bpmCyoff)/bpmCyraw << endl;
       }
     }
     
@@ -205,6 +238,19 @@ bpm_callibration_offsets(const char* finname  = "harp_info.txt"){
     cmean->cd(6*ir+6);
     //hbpmCypos->Fit("gaus");
     hbpmCypos->Draw();
+  
+    cmean3->cd(6*ir+1);
+    hbpmAxposoff->Draw();
+    cmean3->cd(6*ir+2);
+    hbpmAyposoff->Draw();
+    cmean3->cd(6*ir+3);
+    hbpmBxposoff->Draw();
+    cmean3->cd(6*ir+4);
+    hbpmByposoff->Draw();
+    cmean3->cd(6*ir+5);
+    hbpmCxposoff->Draw();
+    cmean3->cd(6*ir+6);
+    hbpmCyposoff->Draw();
   
     cout <<" check " << endl; 
 

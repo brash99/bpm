@@ -131,12 +131,12 @@ bpm_callibration(const char* finname  = "harp_info.txt"){
     Int_t totev = T->GetEntries(); 
     //Read the branch for the BPM positions from the EPICS 
     T->SetBranchAddress("ibcm1",&ibcm1);
-    T->SetBranchAddress("IPM3H07A.XRAW",&bpmAxpos);
-    T->SetBranchAddress("IPM3H07A.YRAW",&bpmAypos);
-    T->SetBranchAddress("IPM3H07B.XRAW",&bpmBxpos);
-    T->SetBranchAddress("IPM3H07B.YRAW",&bpmBypos); 
-    T->SetBranchAddress("IPM3H07C.XRAW",&bpmCxpos);
-    T->SetBranchAddress("IPM3H07C.YRAW",&bpmCypos); 
+    T->SetBranchAddress("IPM3H07A.XPOS",&bpmAxpos);
+    T->SetBranchAddress("IPM3H07A.YPOS",&bpmAypos);
+    T->SetBranchAddress("IPM3H07B.XPOS",&bpmBxpos);
+    T->SetBranchAddress("IPM3H07B.YPOS",&bpmBypos); 
+    T->SetBranchAddress("IPM3H07C.XPOS",&bpmCxpos);
+    T->SetBranchAddress("IPM3H07C.YPOS",&bpmCypos); 
     //Creating the histogram of the BPM positions and 
     TH1F* hbpmAxpos =new TH1F("bpmAxpos","bpmAxpos",100,-3,3);
     TH1F* hbpmAypos =new TH1F("bpmAypos","bpmAypos",100,-3,3);
@@ -227,12 +227,12 @@ bpm_callibration(const char* finname  = "harp_info.txt"){
     Int_t totev = T->GetEntries(); 
     //Read the branch for the BPM positions from the EPICS 
     T->SetBranchAddress("ibcm1",&ibcm1);
-    T->SetBranchAddress("IPM3H07A.XRAW",&bpmAxpos);
-    T->SetBranchAddress("IPM3H07A.YRAW",&bpmAypos);
-    T->SetBranchAddress("IPM3H07B.XRAW",&bpmBxpos);
-    T->SetBranchAddress("IPM3H07B.YRAW",&bpmBypos); 
-    T->SetBranchAddress("IPM3H07C.XRAW",&bpmCxpos);
-    T->SetBranchAddress("IPM3H07C.YRAW",&bpmCypos); 
+    T->SetBranchAddress("IPM3H07A.XPOS",&bpmAxpos);
+    T->SetBranchAddress("IPM3H07A.YPOS",&bpmAypos);
+    T->SetBranchAddress("IPM3H07B.XPOS",&bpmBxpos);
+    T->SetBranchAddress("IPM3H07B.YPOS",&bpmBypos); 
+    T->SetBranchAddress("IPM3H07C.XPOS",&bpmCxpos);
+    T->SetBranchAddress("IPM3H07C.YPOS",&bpmCypos); 
     //Creating the histogram of the BPM positions and 
     TH1F* hbpmAxposc =new TH1F("bpmAxposc","bpmAxposc",100,-3,3);
     TH1F* hbpmAyposc =new TH1F("bpmAyposc","bpmAyposc",100,-3,3);

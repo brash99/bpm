@@ -131,12 +131,12 @@ bpm_callibration_set(const char* finname  = "harp_info.txt"){
     Int_t totev = T->GetEntries(); 
     //Read the branch for the BPM positions from the EPICS 
     T->SetBranchAddress("ibcm1",&ibcm1);
-    T->SetBranchAddress("IPM3H07A.XRAW",&bpmAxpos);
-    T->SetBranchAddress("IPM3H07A.YRAW",&bpmAypos);
-    T->SetBranchAddress("IPM3H07B.XRAW",&bpmBxpos);
-    T->SetBranchAddress("IPM3H07B.YRAW",&bpmBypos); 
-    T->SetBranchAddress("IPM3H07C.XRAW",&bpmCxpos);
-    T->SetBranchAddress("IPM3H07C.YRAW",&bpmCypos); 
+    T->SetBranchAddress("IPM3H07A.XPOS",&bpmAxpos);
+    T->SetBranchAddress("IPM3H07A.YPOS",&bpmAypos);
+    T->SetBranchAddress("IPM3H07B.XPOS",&bpmBxpos);
+    T->SetBranchAddress("IPM3H07B.YPOS",&bpmBypos); 
+    T->SetBranchAddress("IPM3H07C.XPOS",&bpmCxpos);
+    T->SetBranchAddress("IPM3H07C.YPOS",&bpmCypos); 
     //Creating the histogram of the BPM positions and 
     TH1F* hbpmAxpos =new TH1F("bpmAxpos","bpmAxpos",100,-3,3);
     TH1F* hbpmAypos =new TH1F("bpmAypos","bpmAypos",100,-3,3);
@@ -227,12 +227,12 @@ bpm_callibration_set(const char* finname  = "harp_info.txt"){
     Int_t totev = T->GetEntries(); 
     //Read the branch for the BPM positions from the EPICS 
     T->SetBranchAddress("ibcm1",&ibcm1);
-    T->SetBranchAddress("IPM3H07A.XRAW",&bpmAxpos);
-    T->SetBranchAddress("IPM3H07A.YRAW",&bpmAypos);
-    T->SetBranchAddress("IPM3H07B.XRAW",&bpmBxpos);
-    T->SetBranchAddress("IPM3H07B.YRAW",&bpmBypos); 
-    T->SetBranchAddress("IPM3H07C.XRAW",&bpmCxpos);
-    T->SetBranchAddress("IPM3H07C.YRAW",&bpmCypos); 
+    T->SetBranchAddress("IPM3H07A.XPOS",&bpmAxpos);
+    T->SetBranchAddress("IPM3H07A.YPOS",&bpmAypos);
+    T->SetBranchAddress("IPM3H07B.XPOS",&bpmBxpos);
+    T->SetBranchAddress("IPM3H07B.YPOS",&bpmBypos); 
+    T->SetBranchAddress("IPM3H07C.XPOS",&bpmCxpos);
+    T->SetBranchAddress("IPM3H07C.YPOS",&bpmCypos); 
     //Creating the histogram of the BPM positions and 
     TH1F* hbpmAxposc =new TH1F("bpmAxposc","bpmAxposc",100,-3,3);
     TH1F* hbpmAyposc =new TH1F("bpmAyposc","bpmAyposc",100,-3,3);
@@ -549,18 +549,35 @@ bpm_callibration_set(const char* finname  = "harp_info.txt"){
 //
 // Use set calibration from "good" seven runs for comparison purposes
 //
-    bpmAx_p1 = -1.00111;
-    bpmAx_p0 = -0.123099;
-    bpmBx_p1 = -1.24023;
-    bpmBx_p0 = -0.061674;
-    bpmCx_p1 = -0.940987;
-    bpmCx_p0 = -1.00727;
-    bpmAy_p1 = 0.957734;
-    bpmAy_p0 = -0.44177;
-    bpmBy_p1 = 1.19394;
-    bpmBy_p0 = 0.190897;
-    bpmCy_p1 = 0.852772;
-    bpmCy_p0 = 0.549773;
+// From raw BPM values:
+//
+//    bpmAx_p1 = -1.00111;
+//    bpmAx_p0 = -0.123099;
+//    bpmBx_p1 = -1.24023;
+//    bpmBx_p0 = -0.061674;
+//    bpmCx_p1 = -0.940987;
+//    bpmCx_p0 = -1.00727;
+//    bpmAy_p1 = 0.957734;
+//    bpmAy_p0 = -0.44177;
+//    bpmBy_p1 = 1.19394;
+//    bpmBy_p0 = 0.190897;
+//    bpmCy_p1 = 0.852772;
+//    bpmCy_p0 = 0.549773;
+//
+// From BPM values with offsets
+//
+    bpmAx_p1 = -1.00662;
+    bpmAx_p0 = -0.117614;
+    bpmBx_p1 = -1.23883;
+    bpmBx_p0 = -0.0518782;
+    bpmCx_p1 = -0.942886;
+    bpmCx_p0 = -0.850338;
+    bpmAy_p1 = 0.959665;
+    bpmAy_p0 = -0.181242;
+    bpmBy_p1 = 1.19255;
+    bpmBy_p0 = 0.452053;
+    bpmCy_p1 = 0.844705;
+    bpmCy_p0 = 0.413699;
 //
 //
    
