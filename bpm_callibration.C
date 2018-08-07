@@ -44,6 +44,8 @@ bpm_callibration(const char* finname  = "harp_info.txt"){
   
   Double_t ibcm1;
   Double_t bpmAxpos,bpmAypos,bpmBxpos,bpmBypos,bpmCxpos,bpmCypos;
+  Double_t ibcm1r;
+  Double_t rasterAxpos,rasterAypos,rasterBxpos,rasterBypos;
   
   Double_t c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14; 
   std :: vector<Double_t>  hAx, hAy, hBx, hBy, hAz, hBz, herr ;
@@ -106,17 +108,93 @@ bpm_callibration(const char* finname  = "harp_info.txt"){
   
   std::vector<Double_t> bpmAxposmean(size), bpmAyposmean(size), bpmBxposmean(size), bpmByposmean(size);
   std::vector<Double_t> bpmCxposmean(size), bpmCyposmean(size);
+  std::vector<Double_t> rasterAxposmean(size), rasterAyposmean(size), rasterBxposmean(size), rasterByposmean(size);
+  
   std::vector<Double_t> bpmAxposmeanErr(size), bpmAyposmeanErr(size), bpmBxposmeanErr(size), bpmByposmeanErr(size);
   std::vector<Double_t> bpmCxposmeanErr(size), bpmCyposmeanErr(size);
+  std::vector<Double_t> rasterAxposmeanErr(size), rasterAyposmeanErr(size), rasterBxposmeanErr(size), rasterByposmeanErr(size);
+  
   std::vector<Double_t> bpmAxposmeanc(size), bpmAyposmeanc(size), bpmBxposmeanc(size), bpmByposmeanc(size);
   std::vector<Double_t> bpmCxposmeanc(size), bpmCyposmeanc(size);
+  
   std::vector<Double_t> bpmAxposmeancErr(size), bpmAyposmeancErr(size), bpmBxposmeancErr(size), bpmByposmeancErr(size);
   std::vector<Double_t> bpmCxposmeancErr(size), bpmCyposmeancErr(size);
+  
   std::vector<Double_t>err(size);
+  std::vector<Double_t>errr(size);
+  
   TCanvas *cmean = new TCanvas("cmean","Mean BPM Fits", 1800, 1200);
   cmean ->Divide(6,size);
+  TCanvas *cmeanr = new TCanvas("cmeanr","Mean Raster Fits", 1800, 1200);
+  cmeanr ->Divide(4,size);
   TCanvas *cmean2 = new TCanvas("cmean2","Mean BPM Fits", 1800, 1200);
   cmean2 ->Divide(6,size);
+
+  for (UInt_t irr = 0; irr < hAx.size(); irr ++){  //Loop over raster runs starts here
+
+    errr[irr] =0.0;
+    
+   
+    //TFile *f = new TFile(Form("../hallc_replay/ROOTfiles/shms_replay_raster_simple_%d_-1.root",shms_run_NUM[ir]),"READ"); // %d : expects integer; %f expects float 
+    
+    TString file_format=gSystem->GetFromPipe("echo $hallc_replay_dir")+"/ROOTfiles/shms_replay_raster_simple_%d_-1.root";
+    TFile *f = new TFile(Form(file_format,shms_run_NUM[irr]),"READ"); // %d : expects integer; %f expects float 
+    TTree *T = (TTree*)f->Get("T");
+    Int_t totev = T->GetEntries(); 
+    //Read the branch for the raster positions from the event TREE 
+    T->SetBranchAddress("ibcm1",&ibcm1r);
+    T->SetBranchAddress("FRXApos",&rasterAxpos);
+    T->SetBranchAddress("FRXBpos",&rasterBxpos);
+    T->SetBranchAddress("FRYApos",&rasterAypos);
+    T->SetBranchAddress("FRYBpos",&rasterBypos);
+    //Creating the histogram of the raster positions and 
+    TH1F* hrasterAxpos =new TH1F("rasterAxpos","rasterAxpos",100,-3,3);
+    TH1F* hrasterAypos =new TH1F("rasterAypos","rasterAypos",100,-3,3);
+    TH1F* hrasterBxpos =new TH1F("rasterBxpos","rasterBxpos",100,-3,3);
+    TH1F* hrasterBypos =new TH1F("rasterBypos","rasterBypos",100,-3,3);
+    // Fill Histograms here filling the Raster positions histograms   
+    for (Int_t iev = 0 ; iev < totev ;iev ++){
+      T->GetEntry(iev);
+      if (ibcm1r>1){
+	hrasterAxpos ->Fill(rasterAxpos);
+	hrasterAypos ->Fill(rasterAypos);
+	hrasterBxpos ->Fill(rasterBxpos);
+	hrasterBypos ->Fill(rasterBypos);
+      }
+    }
+    
+    // TF1 *fit1 = (TF1 *)hbpmAxpos->GetFunction("gaus");
+    // Double_t parameter0 = fit1->GetParameter(0);
+    //cout << "parameter0 :"<<parameter0 << endl;
+    
+    cmeanr->cd(4*irr+1);
+    hrasterAxpos->Draw();
+    cmeanr->cd(4*irr+2);
+    hrasterAypos->Draw();
+    cmeanr->cd(4*irr+3);
+    hrasterBxpos->Draw();
+    cmeanr->cd(4*irr+4);
+    hrasterBypos->Draw();
+  
+    cout <<" check raster" << endl; 
+
+
+    rasterAxposmean[irr] = hrasterAxpos->GetMean();
+    rasterAxposmeanErr[irr] = hrasterAxpos->GetRMS();
+    cout <<"mean of x of raster A :" << rasterAxposmean[irr] << endl;
+    rasterAyposmean[irr] = hrasterAypos->GetMean();
+    rasterAyposmeanErr[irr] = hrasterAypos->GetRMS();
+    cout <<"mean of y of raster A :" << rasterAyposmean[irr] << endl;
+    rasterBxposmean[irr] = hrasterBxpos->GetMean();
+    rasterBxposmeanErr[irr] = hrasterBxpos->GetRMS();
+    cout <<"mean of x of raster B :" << rasterBxposmean[irr] << endl;
+    rasterByposmean[irr] = hrasterBypos->GetMean();
+    rasterByposmeanErr[irr] = hrasterBypos->GetRMS();
+    cout <<"mean of y of raster B :" << rasterByposmean[irr] << endl;
+   
+    cout << "******* ok raster*****" << endl;
+    
+  } // Loop over raster run ends here
 
   for (UInt_t ir = 0; ir < hAx.size(); ir ++){  //Loop over runs starts here
 
@@ -320,9 +398,9 @@ bpm_callibration(const char* finname  = "harp_info.txt"){
   std:: vector<Double_t> hxerr0(size), hxerr1(size);
   std:: vector<Double_t> hyerr0(size), hyerr1(size);
  TCanvas *ch = new TCanvas("ch","Hx vs Hz : Hall C", 800, 900);
-  ch ->Divide(3,3);
+  ch ->Divide(3,4);
  TCanvas *chy = new TCanvas("chy","Hy vs Hz : Hall C", 800, 900);
-  chy ->Divide(3,3);
+  chy ->Divide(3,4);
   
   for (Int_t i =0; i<hAx.size();i++){
     ch->cd(i+1);
@@ -547,9 +625,9 @@ bpm_callibration(const char* finname  = "harp_info.txt"){
     Double_t bpmCy_e1=gr8->GetFunction("pol1")->GetParError(1);
    
  TCanvas *chz = new TCanvas("chz","XPos vs zPos : Hall C", 800, 900);
-  chz ->Divide(3,3);
+  chz ->Divide(3,4);
  TCanvas *chzz = new TCanvas("chzz","YPos vs zPos : Hall C", 800, 900);
-  chzz ->Divide(3,3);
+  chzz ->Divide(3,4);
   
   for (Int_t i =0; i<hAx.size();i++){
     bpmAzz[i] = bpmAz;
