@@ -53,9 +53,9 @@ raster_plots(Int_t run_NUM = 4251){
   Double_t xoffA = 0.000;
   Double_t yoffA = 0.000;
   Double_t xoffB = 0.000;
-  Double_t yoffB = 0.008;
-  Double_t rAcut = 0.11;
-  Double_t rBcut = 0.11;
+  Double_t yoffB = 0.000;
+  Double_t rAcut = 5.00;
+  Double_t rBcut = 5.00;
   
   TFile *f = new TFile(Form("/Users/brash/Dropbox/Research/analysis/hallc_replay/ROOTfiles/coin_replay_production_%d_-1.root",run_NUM),"READ"); // %d : expects integer; %f expects float 
     
@@ -76,27 +76,27 @@ raster_plots(Int_t run_NUM = 4251){
     T->SetBranchAddress("P.rb.raster.fryaRawAdc",&rasterAy_RawADC);
     T->SetBranchAddress("P.rb.raster.frybRawAdc",&rasterBy_RawADC);
     //Creating the histogram of the BPM positions and 
-    TH1F* hrasterAx =new TH1F("rasterAx","rasterAx",100,-0.12,0.12);
-    TH1F* hrasterAy =new TH1F("rasterAy","rasterAy",100,-0.12,0.12);
-    TH1F* hrasterBx =new TH1F("rasterBx","rasterBx",100,-0.12,0.12);
-    TH1F* hrasterBy =new TH1F("rasterBy","rasterBy",100,-0.12,0.12);
-    TH2F* hrasterAxAy =new TH2F("rasterAxAy","rasterAxAy",100,-0.12,0.12,100,-0.12,0.12);
-    TH2F* hrasterBxBy =new TH2F("rasterBxBy","rasterBxBy",100,-0.12,0.12,100,-0.12,0.12);
-    TH1F* hrasterA_radius =new TH1F("rasterA_radius","rasterA_radius",100,0.00,0.18);
-    TH1F* hrasterB_radius =new TH1F("rasterB_radius","rasterB_radius",100,0.00,0.18);
+    TH1F* hrasterAx =new TH1F("rasterAx","rasterAx",100,-3.00,3.00);
+    TH1F* hrasterAy =new TH1F("rasterAy","rasterAy",100,-3.00,3.00);
+    TH1F* hrasterBx =new TH1F("rasterBx","rasterBx",100,-3.00,3.00);
+    TH1F* hrasterBy =new TH1F("rasterBy","rasterBy",100,-3.00,3.00);
+    TH2F* hrasterAxAy =new TH2F("rasterAxAy","rasterAxAy",100,-3.00,3.00,100,-3.00,3.00);
+    TH2F* hrasterBxBy =new TH2F("rasterBxBy","rasterBxBy",100,-3.00,3.00,100,-3.00,3.00);
+    TH1F* hrasterA_radius =new TH1F("rasterA_radius","rasterA_radius",100,0.00,05.00);
+    TH1F* hrasterB_radius =new TH1F("rasterB_radius","rasterB_radius",100,0.00,5.55);
     // Fill Histograms here   
     for (Int_t iev = 0 ; iev < totev ;iev ++){
       if (iev%1000 == 0) cout << "Event: " << iev << endl;
       T->GetEntry(iev);
-      Double_t rA = sqrt((rasterAx-xoffA)*(rasterAx-xoffA)+(rasterAy-yoffA)*(rasterAy-yoffA));
-      Double_t rB = sqrt((rasterBx-xoffB)*(rasterBx-xoffB)+(rasterBy-yoffB)*(rasterBy-yoffB));
+      Double_t rA = sqrt((10.0*rasterAx-xoffA)*(10.0*rasterAx-xoffA)+(10.0*rasterAy-yoffA)*(10.0*rasterAy-yoffA));
+      Double_t rB = sqrt((10.0*rasterBx-xoffB)*(10.0*rasterBx-xoffB)+(10.0*rasterBy-yoffB)*(10.0*rasterBy-yoffB));
       //if (ibcm1>1){
-	hrasterAx ->Fill(rasterAx);
-	hrasterBx ->Fill(rasterBx);
-	hrasterAy ->Fill(rasterAy);
-	hrasterBy ->Fill(rasterBy);
-        hrasterAxAy->Fill(rasterAx,rasterAy);
-        hrasterBxBy->Fill(rasterBx,rasterBy);
+	hrasterAx ->Fill(10.0*rasterAx);
+	hrasterBx ->Fill(10.0*rasterBx);
+	hrasterAy ->Fill(10.0*rasterAy);
+	hrasterBy ->Fill(10.0*rasterBy);
+        hrasterAxAy->Fill(10.0*rasterAx,10.0*rasterAy);
+        hrasterBxBy->Fill(10.0*rasterBx,10.0*rasterBy);
         if (rA<rAcut) hrasterA_radius->Fill(rA);
         if (rB<rBcut) hrasterB_radius->Fill(rB);
       //}

@@ -36,8 +36,8 @@ bpm_callibration_set(const char* finname  = "harp_info.txt"){
   gStyle->SetPaperSize(23,24);
   
   
-  Double_t hmin = -4.0;
-  Double_t hmax =  4.0;
+  Double_t hmin = -3.0;
+  Double_t hmax =  3.0;
    
   Double_t bpmAz = 370.826; // unit cm , from survey 
   Double_t bpmBz = 224.968; // unit cm , from survey 
@@ -157,10 +157,10 @@ bpm_callibration_set(const char* finname  = "harp_info.txt"){
     for (Int_t iev = 0 ; iev < totev ;iev ++){
       T->GetEntry(iev);
       if (ibcm1r>1){
-	hrasterAxpos ->Fill(rasterAxpos);
-	hrasterAypos ->Fill(rasterAypos);
-	hrasterBxpos ->Fill(rasterBxpos);
-	hrasterBypos ->Fill(rasterBypos);
+	hrasterAxpos ->Fill(10.*rasterAxpos);
+	hrasterAypos ->Fill(10.*rasterAypos);
+	hrasterBxpos ->Fill(10.*rasterBxpos);
+	hrasterBypos ->Fill(10.*rasterBypos);
       }
     }
     
@@ -210,12 +210,12 @@ bpm_callibration_set(const char* finname  = "harp_info.txt"){
     Int_t totev = T->GetEntries(); 
     //Read the branch for the BPM positions from the EPICS 
     T->SetBranchAddress("ibcm1",&ibcm1);
-    T->SetBranchAddress("IPM3H07A.XPOS",&bpmAxpos);
-    T->SetBranchAddress("IPM3H07A.YPOS",&bpmAypos);
-    T->SetBranchAddress("IPM3H07B.XPOS",&bpmBxpos);
-    T->SetBranchAddress("IPM3H07B.YPOS",&bpmBypos); 
-    T->SetBranchAddress("IPM3H07C.XPOS",&bpmCxpos);
-    T->SetBranchAddress("IPM3H07C.YPOS",&bpmCypos); 
+    T->SetBranchAddress("IPM3H07A.XRAW",&bpmAxpos);
+    T->SetBranchAddress("IPM3H07A.YRAW",&bpmAypos);
+    T->SetBranchAddress("IPM3H07B.XRAW",&bpmBxpos);
+    T->SetBranchAddress("IPM3H07B.YRAW",&bpmBypos); 
+    T->SetBranchAddress("IPM3H07C.XRAW",&bpmCxpos);
+    T->SetBranchAddress("IPM3H07C.YRAW",&bpmCypos); 
     //Creating the histogram of the BPM positions and 
     TH1F* hbpmAxpos =new TH1F("bpmAxpos","bpmAxpos",100,hmin,hmax);
     TH1F* hbpmAypos =new TH1F("bpmAypos","bpmAypos",100,hmin,hmax);
@@ -306,12 +306,12 @@ bpm_callibration_set(const char* finname  = "harp_info.txt"){
     Int_t totev = T->GetEntries(); 
     //Read the branch for the BPM positions from the EPICS 
     T->SetBranchAddress("ibcm1",&ibcm1);
-    T->SetBranchAddress("IPM3H07A.XPOS",&bpmAxpos);
-    T->SetBranchAddress("IPM3H07A.YPOS",&bpmAypos);
-    T->SetBranchAddress("IPM3H07B.XPOS",&bpmBxpos);
-    T->SetBranchAddress("IPM3H07B.YPOS",&bpmBypos); 
-    T->SetBranchAddress("IPM3H07C.XPOS",&bpmCxpos);
-    T->SetBranchAddress("IPM3H07C.YPOS",&bpmCypos); 
+    T->SetBranchAddress("IPM3H07A.XRAW",&bpmAxpos);
+    T->SetBranchAddress("IPM3H07A.YRAW",&bpmAypos);
+    T->SetBranchAddress("IPM3H07B.XRAW",&bpmBxpos);
+    T->SetBranchAddress("IPM3H07B.YRAW",&bpmBypos); 
+    T->SetBranchAddress("IPM3H07C.XRAW",&bpmCxpos);
+    T->SetBranchAddress("IPM3H07C.YRAW",&bpmCypos); 
     //Creating the histogram of the BPM positions and 
     TH1F* hbpmAxposc =new TH1F("bpmAxposc","bpmAxposc",100,hmin,hmax);
     TH1F* hbpmAyposc =new TH1F("bpmAyposc","bpmAyposc",100,hmin,hmax);
@@ -399,10 +399,20 @@ bpm_callibration_set(const char* finname  = "harp_info.txt"){
   std:: vector<Double_t> rasterAzz(size);
   std:: vector<Double_t> hxerr0(size), hxerr1(size);
   std:: vector<Double_t> hyerr0(size), hyerr1(size);
+
+  Double_t ssize = sqrt(size);
+  Int_t isize = ssize;
+  Int_t jsize;
+  if (size%isize == 0) {
+          jsize = size/isize;
+  }else{
+          jsize = int(size/isize)+1;
+  }
+
  TCanvas *ch = new TCanvas("ch","Hx vs Hz : Hall C", 800, 900);
-  ch ->Divide(3,4);
+  ch ->Divide(isize,jsize);
  TCanvas *chy = new TCanvas("chy","Hy vs Hz : Hall C", 800, 900);
-  chy ->Divide(3,4);
+  chy ->Divide(isize,jsize);
   
   for (Int_t i =0; i<hAx.size();i++){
     ch->cd(i+1);
@@ -628,25 +638,25 @@ bpm_callibration_set(const char* finname  = "harp_info.txt"){
 
 // From BPM values with offsets
 //
-     bpmAx_p1 = -1.00662;
-     bpmAx_p0 = -0.117614;
-     bpmBx_p1 = -1.23883;
-     bpmBx_p0 = -0.0518782;
-     bpmCx_p1 = -0.942886;
-     bpmCx_p0 = -0.850338;
-     bpmAy_p1 = 0.959665;
-     bpmAy_p0 = -0.181242;
-     bpmBy_p1 = 1.19255;
-     bpmBy_p0 = 0.452053;
-     bpmCy_p1 = 0.844705;
-     bpmCy_p0 = 0.413699;
+     bpmAx_p1 = -1.00111;
+     bpmAx_p0 = -0.12309;
+     bpmBx_p1 = -1.24023;
+     bpmBx_p0 = -0.061674;
+     bpmCx_p1 = -0.940987;
+     bpmCx_p0 = -1.00727;
+     bpmAy_p1 = 0.957734;
+     bpmAy_p0 = -0.441772;
+     bpmBy_p1 = 1.19394;
+     bpmBy_p0 = 0.190904;
+     bpmCy_p1 = 0.842774;
+     bpmCy_p0 = 0.549787;
 //
 //
    
  TCanvas *chz = new TCanvas("chz","XPos vs zPos : Hall C", 800, 900);
-  chz ->Divide(3,4);
+  chz ->Divide(isize,jsize);
  TCanvas *chzz = new TCanvas("chzz","YPos vs zPos : Hall C", 800, 900);
-  chzz ->Divide(3,4);
+  chzz ->Divide(isize,jsize);
   
   for (Int_t i =0; i<hAx.size();i++){
     bpmAzz[i] = bpmAz;
