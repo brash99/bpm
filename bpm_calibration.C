@@ -11,7 +11,7 @@
 #include <TROOT.h>
 
 void
-bpm_callibration(const char* finname  = "harp_info.txt"){
+bpm_calibration(const char* finname  = "harp_info.txt"){
   
   
   gStyle->SetOptStat(0);
